@@ -2,6 +2,14 @@ from transformers import InstructBlipProcessor, InstructBlipForConditionalGenera
 from PIL import Image
 import requests
 import torch
+import os
+
+# Set CUDA memory allocation configuration
+os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
+
+# Clear CUDA cache
+if torch.cuda.is_available():
+    torch.cuda.empty_cache()
 
 # Load model and processor
 model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b")
