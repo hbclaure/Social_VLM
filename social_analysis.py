@@ -33,7 +33,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 image = Image.open("/home/hc864/Social_VLM/images/longvid0013.jpg")
 
 # Your prompt
-prompt = "Explain the image in detail."
+prompt = "Explain the image in detail. How many people are in the image? What are they doing? What is the robot doing? What is the robot's emotion? What is the robot's intention? What is the robot's goal? What is the robot's action? What is the robot's response? What is the robot's outcome? What is the robot's next action? What is the robot's next response? What is the robot's next outcome?"
 
 # Preprocess
 inputs = processor(images=image, text=prompt, return_tensors="pt").to(device)
