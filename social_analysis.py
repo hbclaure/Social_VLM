@@ -8,10 +8,10 @@ model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instruc
 processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-vicuna-7b")
 
 # Load image
-image = Image.open(requests.get("https://example.com/your_image.jpg", stream=True).raw)
+image = Image.open(requests.get("Users/houstonclaure/Desktop/Social_VLM/images/longvid0013.jpg", stream=True).raw)
 
 # Your prompt
-prompt = "What should the robot do next to be fair?"
+prompt = "What is the robot doing?"
 
 # Preprocess
 inputs = processor(images=image, text=prompt, return_tensors="pt").to("cuda" if torch.cuda.is_available() else "cpu")
