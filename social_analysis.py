@@ -55,7 +55,7 @@ with torch.no_grad():  # Disable gradient calculation
     )
 
     # Print only the model's response (excluding the prompt)
-    response = processor.batch_decode(outputs.sequences, skip_special_tokens=True)[0]
+    response = processor.batch_decode(outputs, skip_special_tokens=True)[0]
     response = response.replace(prompt, "").strip()  # Remove the prompt from the response
 
     print("\nModel's Response:")
