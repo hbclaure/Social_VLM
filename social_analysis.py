@@ -21,8 +21,7 @@ quantization_config = BitsAndBytesConfig(
 # Load model and processor
 model = InstructBlipForConditionalGeneration.from_pretrained(
     "Salesforce/instructblip-vicuna-7b",
-    quantization_config=quantization_config,
-    device_map={"": torch.device("cuda" if torch.cuda.is_available() else "cpu")}  # Explicit device mapping
+    device_map={"": torch.device("cuda" if torch.cuda.is_available() else "cpu")}
 )
 processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-vicuna-7b")
 
