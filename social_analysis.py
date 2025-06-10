@@ -69,13 +69,14 @@ with torch.no_grad():  # Disable gradient calculation
     # Calculate average log probability
     log_probs = transition_scores[0].cpu().numpy()
     
-    # Get the actual tokens
-    tokens = processor.batch_decode(outputs.sequences, skip_special_tokens=False)[0].split()
+    # Get the actual tokens using the tokenizer directly
+    input_ids = generated_sequence.cpu().numpy()
+    tokens = processor.tokenizer.convert_ids_to_tokens(input_ids)
     
     # Print all token-probability pairs in sequence
     print("\nComplete Token Sequence with Probabilities:")
     for i, (token, prob) in enumerate(zip(tokens, log_probs)):
-        print(f"Position {i:3d}: Token: {token:10} | Log Probability: {prob:10.4f}")
+        print(f"Position {i:3d}: Token: {token:15} | Log Probability: {prob:10.4f}")
 
     # Calculate average log probability (excluding -inf)
     valid_probs = log_probs[log_probs != float('-inf')]
