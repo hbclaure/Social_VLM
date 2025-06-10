@@ -36,7 +36,7 @@ with torch.no_grad():  # Disable gradient calculation
     image = Image.open("/home/hc864/Social_VLM/images/longvid0140.jpg")
 
     # Your prompt
-    prompt = "In the image the robot is in charge of distributing wooden blocks to participants. The robot is an orange robot arm. The wooden blocks are stacked behind it. There are two human teammates. The task is for the people to create the tallest possible tower using these blocks. The person who places the most block gains an additional reward. The robot's role is to pass these blocks to people. It can only give a block one at a time. Give me a plan of how to distribute the bocks. What should the robot consider."
+    prompt = "In the image the robot is in charge of distributing wooden blocks to participants. The robot is an orange robot arm. The wooden blocks are stacked behind it. There are two human teammates. The task is for the people to create the tallest possible tower using these blocks. The person who places the most block gains an additional reward. The robot's role is to pass these blocks to people. It can only give a block one at a time. Do you pass it to the individual on your: a) right or b) left?. Respond with A or B depending on your answer."
 
     # Preprocess
     inputs = processor(images=image, text=prompt, return_tensors="pt").to(device)
