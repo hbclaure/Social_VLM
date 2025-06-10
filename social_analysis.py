@@ -68,7 +68,18 @@ with torch.no_grad():  # Disable gradient calculation
 
     # Calculate average log probability
     log_probs = transition_scores[0].cpu().numpy()
-    avg_log_prob = log_probs.mean()
+    
+    # Get the actual tokens
+    tokens = processor.batch_decode(outputs.sequences, skip_special_tokens=False)[0].split()
+    
+    # Print token-probability pairs
+    print("\nToken-Probability Pairs:")
+    for token, prob in zip(tokens, log_probs):
+        print(f"Token: {token:10} | Log Probability: {prob:10.4f}")
+
+    # Calculate average log probability (excluding -inf)
+    valid_probs = log_probs[log_probs != float('-inf')]
+    avg_log_prob = valid_probs.mean() if len(valid_probs) > 0 else float('-inf')
 
     # Print only the model's response (excluding the prompt)
     response = processor.batch_decode(outputs.sequences, skip_special_tokens=True)[0]
@@ -76,6 +87,5 @@ with torch.no_grad():  # Disable gradient calculation
 
     print("\nModel's Response:")
     print(response)
-    print(f"\nAverage Log Probability: {avg_log_prob:.4f}")
-    print(f"Per-token Log Probabilities: {log_probs}")
+    print(f"\nAverage Log Probability (excluding special tokens): {avg_log_prob:.4f}")
 
