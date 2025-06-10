@@ -73,10 +73,20 @@ with torch.no_grad():  # Disable gradient calculation
     input_ids = generated_sequence.cpu().numpy()
     tokens = processor.tokenizer.convert_ids_to_tokens(input_ids)
     
+    # Print debugging information
+    print("\nDebug Information:")
+    print(f"Number of tokens: {len(tokens)}")
+    print(f"Number of log probabilities: {len(log_probs)}")
+    print(f"Generated sequence shape: {generated_sequence.shape}")
+    
     # Print all token-probability pairs in sequence
     print("\nComplete Token Sequence with Probabilities:")
     for i, (token, prob) in enumerate(zip(tokens, log_probs)):
         print(f"Position {i:3d}: Token: {token:15} | Log Probability: {prob:10.4f}")
+
+    # Print the raw sequence for debugging
+    print("\nRaw Generated Sequence:")
+    print(processor.tokenizer.decode(generated_sequence))
 
     # Calculate average log probability (excluding -inf)
     valid_probs = log_probs[log_probs != float('-inf')]
