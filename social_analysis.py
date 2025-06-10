@@ -51,46 +51,8 @@ with torch.no_grad():  # Disable gradient calculation
         length_penalty=1.0,
         do_sample=True,
         num_return_sequences=1,
-        output_scores=True,
-        return_dict_in_generate=True,
         use_cache=True  # Enable KV-caching
     )
-
-    # Get the generated sequence
-    generated_sequence = outputs.sequences[0]
-
-    # Compute log probabilities
-    transition_scores = model.compute_transition_scores(
-        outputs.sequences, 
-        outputs.scores, 
-        normalize_logits=True
-    )
-
-    # Calculate average log probability
-    log_probs = transition_scores[0].cpu().numpy()
-    
-    # Get the actual tokens using the tokenizer directly
-    input_ids = generated_sequence.cpu().numpy()
-    tokens = processor.tokenizer.convert_ids_to_tokens(input_ids)
-    
-    # Print debugging information
-    print("\nDebug Information:")
-    print(f"Number of tokens: {len(tokens)}")
-    print(f"Number of log probabilities: {len(log_probs)}")
-    print(f"Generated sequence shape: {generated_sequence.shape}")
-    
-    # Print all token-probability pairs in sequence
-    print("\nComplete Token Sequence with Probabilities:")
-    for i, (token, prob) in enumerate(zip(tokens, log_probs)):
-        print(f"Position {i:3d}: Token: {token:15} | Log Probability: {prob:10.4f}")
-
-    # Print the raw sequence for debugging
-    print("\nRaw Generated Sequence:")
-    print(processor.tokenizer.decode(generated_sequence))
-
-    # Calculate average log probability (excluding -inf)
-    valid_probs = log_probs[log_probs != float('-inf')]
-    avg_log_prob = valid_probs.mean() if len(valid_probs) > 0 else float('-inf')
 
     # Print only the model's response (excluding the prompt)
     response = processor.batch_decode(outputs.sequences, skip_special_tokens=True)[0]
@@ -98,5 +60,4 @@ with torch.no_grad():  # Disable gradient calculation
 
     print("\nModel's Response:")
     print(response)
-    print(f"\nAverage Log Probability (excluding special tokens): {avg_log_prob:.4f}")
 
