@@ -72,17 +72,10 @@ with torch.no_grad():  # Disable gradient calculation
     # Get the actual tokens
     tokens = processor.batch_decode(outputs.sequences, skip_special_tokens=False)[0].split()
     
-    # Print token-probability pairs
-    print("\nToken-Probability Pairs:")
-    print("Input Tokens:")
-    for token, prob in zip(tokens, log_probs):
-        if token.startswith("<image>") or token in ["In", "the"]:
-            print(f"Token: {token:10} | Log Probability: {prob:10.4f}")
-    
-    print("\nResponse Tokens:")
-    for token, prob in zip(tokens, log_probs):
-        if token in ["A", "B"]:
-            print(f"Token: {token:10} | Log Probability: {prob:10.4f}")
+    # Print all token-probability pairs in sequence
+    print("\nComplete Token Sequence with Probabilities:")
+    for i, (token, prob) in enumerate(zip(tokens, log_probs)):
+        print(f"Position {i:3d}: Token: {token:10} | Log Probability: {prob:10.4f}")
 
     # Calculate average log probability (excluding -inf)
     valid_probs = log_probs[log_probs != float('-inf')]
