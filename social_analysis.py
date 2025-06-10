@@ -3,25 +3,19 @@ from PIL import Image
 import requests
 import torch
 import os
-from transformers import BitsAndBytesConfig
 
-# Set CUDA memory allocation configuration
-os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
+# Set GPU to use
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 # Clear CUDA cache
 if torch.cuda.is_available():
     torch.cuda.empty_cache()
 
-# Configure 8-bit quantization
-quantization_config = BitsAndBytesConfig(
-    load_in_8bit=True,
-    bnb_4bit_compute_dtype=torch.float16
-)
-
 # Load model and processor
 model = InstructBlipForConditionalGeneration.from_pretrained(
     "Salesforce/instructblip-vicuna-7b",
-    device_map={"": torch.device("cuda" if torch.cuda.is_available() else "cpu")}
+    device_map="auto",
+    torch_dtype=torch.float16  # Use float16 for better memory efficiency while maintaining good quality
 )
 processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-vicuna-7b")
 
