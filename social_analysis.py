@@ -43,12 +43,31 @@ outputs = model.generate(
     repetition_penalty=1.5,
     length_penalty=1.0,
     do_sample=True,  # Enable sampling
-    num_return_sequences=1
+    num_return_sequences=1,
+    output_scores=True,  # Get scores for each token
+    return_dict_in_generate=True  # Get detailed output
 )
 
+# Get the generated sequence
+generated_sequence = outputs.sequences[0]
+
+# Compute log probabilities
+transition_scores = model.compute_transition_scores(
+    outputs.sequences, 
+    outputs.scores, 
+    normalize_logits=True
+)
+
+# Calculate average log probability
+log_probs = transition_scores[0].cpu().numpy()
+avg_log_prob = log_probs.mean()
+
 # Print only the model's response (excluding the prompt)
-response = processor.batch_decode(outputs, skip_special_tokens=True)[0]
+response = processor.batch_decode(outputs.sequences, skip_special_tokens=True)[0]
 response = response.replace(prompt, "").strip()  # Remove the prompt from the response
+
 print("\nModel's Response:")
 print(response)
+print(f"\nAverage Log Probability: {avg_log_prob:.4f}")
+print(f"Per-token Log Probabilities: {log_probs}")
 
