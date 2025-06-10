@@ -11,13 +11,16 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 if torch.cuda.is_available():
     torch.cuda.empty_cache()
 
-# Load model and processor
+# Load model and processor with fast image processing
 model = InstructBlipForConditionalGeneration.from_pretrained(
     "Salesforce/instructblip-vicuna-7b",
     device_map="auto",
-    torch_dtype=torch.float16  # Use float16 for better memory efficiency while maintaining good quality
+    torch_dtype=torch.float16
 )
-processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-vicuna-7b")
+processor = InstructBlipProcessor.from_pretrained(
+    "Salesforce/instructblip-vicuna-7b",
+    use_fast=True  # Enable fast image processing
+)
 
 # No need to manually move model to device as device_map handles it
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -31,16 +34,16 @@ prompt = "In the image the robot is in charge of distributing wooden blocks to p
 # Preprocess
 inputs = processor(images=image, text=prompt, return_tensors="pt").to(device)
 
-# Generate with more tokens and better parameters
+# Generate with supported parameters
 outputs = model.generate(
     **inputs,
     max_new_tokens=200,
     num_beams=5,
     min_length=50,
-    top_p=0.9,
     repetition_penalty=1.5,
     length_penalty=1.0,
-    temperature=0.7,
+    do_sample=True,  # Enable sampling
+    num_return_sequences=1
 )
 
 # Print only the model's response (excluding the prompt)
