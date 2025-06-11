@@ -33,7 +33,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.eval()  # Set to evaluation mode
 with torch.no_grad():  # Disable gradient calculation
     # Load image
-    image = Image.open("/home/hc864/Social_VLM/images/short2.png")
+    image = Image.open("/home/hc864/Social_VLM/images/short1.png")
 
     # Your prompt
     prompt = "Describe each person that is visible in the image. Then tell me how many people are visible in the image. Answer with a number only (e.g., 1, 2, 3)."
