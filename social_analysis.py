@@ -36,7 +36,7 @@ with torch.no_grad():  # Disable gradient calculation
     image = Image.open("/home/hc864/Social_VLM/images/short2.png")
 
     # Your prompt
-    prompt = "Describe each person that is visible in the image."
+    prompt = "Describe each person that is visible in the image. Then tell me how many people are visible in the image. Answer with a number only (e.g., 1, 2, 3)."
     #"How many *distinct human participants* are seated around the table? Only count people who are clearly visible. Answer with a number (e.g., 1, 2, 3)."
     
     #How many people are visible around the table? Answer with a number only (e.g., 1, 2, 3)."
