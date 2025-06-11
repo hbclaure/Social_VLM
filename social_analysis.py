@@ -33,7 +33,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.eval()  # Set to evaluation mode
 with torch.no_grad():  # Disable gradient calculation
     # Load image
-    image = Image.open("/home/hc864/Social_VLM/images/short1.png")
+    image = Image.open("/home/hc864/Social_VLM/images/short2.png")
 
     # Your prompt
     prompt = "How many *distinct human participants* are seated around the table? Only count people who are clearly visible. Answer with a number (e.g., 1, 2, 3)."
